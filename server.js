@@ -10,7 +10,15 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:3000"; // set it in Render environment variables , no hardcoding
+
+
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true
+}));
+
+
 app.use(express.json());
 
 app.use("/api/users", userRoutes);      // user routes
