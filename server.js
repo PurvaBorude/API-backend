@@ -35,7 +35,7 @@ app.get(/.*/, (req, res) => {
     return res.status(404).json({ message: 'API route not found' });
   }
   
-  const indexPath = path.join(__dirname, '../frontend/build', 'index.html');
+  const indexPath = path.join(__dirname, 'frontend/build', 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
       console.error('Error serving index.html:', err);
