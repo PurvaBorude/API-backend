@@ -11,7 +11,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:3000"; // set it in Render environment variables , no hardcoding
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:3000";
 
 app.use(cors({
   origin: allowedOrigin,
@@ -21,21 +21,22 @@ app.use(cors({
 app.use(express.json());
 
 // API routes (these must come BEFORE static files and catch-all)
-app.use("/api/users", userRoutes);      // user routes
-app.use("/api/websites", websiteRoutes); // website monitoring routes
+app.use("/api/users", userRoutes);
+app.use("/api/websites", websiteRoutes);
 
 app.get("/ping", (req, res) => res.send("pong"));
 
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// SPA catch-all handler: send back React's index.html file for any non-API routes
+// SPA catch-all handler
 app.get(/.*/, (req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ message: 'API route not found' });
   }
   
-  const indexPath = path.join(__dirname, 'frontend/build', 'index.html');
+  // index.html is inside the static folder
+  const indexPath = path.join(__dirname, '../frontend/build/static', 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
       console.error('Error serving index.html:', err);
